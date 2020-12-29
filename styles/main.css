@@ -28,6 +28,14 @@
     text-align: center; /* Center the text */
     padding: 14px 20px; /* Add some padding */
     text-decoration: none; /* Remove underline */
+
+    border-radius: 15px; /* Round corners */
+    border: solid 1px #555;
+    box-shadow: -10px 10px 5px rgba(0,0,0,0.6);
+    -moz-box-shadow: -10px 10px 5px rgba(0,0,0,0,6);
+    -webkit-box-shadow: -10px 10px 5px  rgba(0,0,0,0.6);
+    -o-box-shadow: -10px 10px 5px  rgba(0,0,0,0.6);
+    border-radius:25px;
 }
 
 /* Right-aligned link */
