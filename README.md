@@ -1,6 +1,5 @@
 # TODO
 
-- Update favicon for browser tab icon: `index.html`
 - Update resume to most updated: `Hero.jsx`
 - Add actual projects: `Projects.jsx`
 - Add projects page with more descriptions of each project
