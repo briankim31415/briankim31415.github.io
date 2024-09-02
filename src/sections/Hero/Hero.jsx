@@ -46,7 +46,7 @@ function Hero() {
 				</p>
 				<a
 					className={styles.description}
-					href='/src/personal_ad/index.html'
+					href='/src/personal_ad/'
 				>
 					Personal Ad
 				</a>
