@@ -20,7 +20,7 @@ ReactDOM.createRoot(document.getElementById('personal_ad')).render(
 				<li>LLMs</li>
 				<li>Computer Vision</li>
 			</ul>
-			<p>I have not teamed up with anyone yet.</p>
+			<p>I have teamed up with Benson Ngai.</p>
 		</body>
 	</React.StrictMode>
 );
