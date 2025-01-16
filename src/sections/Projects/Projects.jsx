@@ -1,6 +1,10 @@
 import styles from './ProjectsStyles.module.css'
 import Viberr from '../../assets/viberr.png'
 import ProjectCard from '../../common/ProjectCard';
+import madcommunity from '../../assets/madcommuity.png'
+import neatpso from '../../assets/neatpso.png'
+import rlstock from '../../assets/rlstock.png'
+import musentiment from '../../assets/musentiment.png'
 
 function Projects() {
   return (
