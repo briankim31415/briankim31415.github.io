@@ -41,8 +41,7 @@ function Hero() {
 					</a>
 				</span>
 				<p className={styles.description}>
-					Masters student in Software Engineering and Systems at UT
-					Austin focusing on AI/ML.
+					Masters student at UT Austin studying AI/ML
 				</p>
 				<a
 					href={resume}

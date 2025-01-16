@@ -7,7 +7,7 @@ function Skills() {
     <section id="skills" className={styles.container}>
       <h1 className="sectionTitle">Skills</h1>
       <div className={styles.skillList}>
-      <SkillList src={checkMarkIcon} skill="OpenAI API" />
+        <SkillList src={checkMarkIcon} skill="OpenAI API" />
         <SkillList src={checkMarkIcon} skill="PyTorch" />
         <SkillList src={checkMarkIcon} skill="TensorFlow" />
         <SkillList src={checkMarkIcon} skill="Scikit-Learn" />
