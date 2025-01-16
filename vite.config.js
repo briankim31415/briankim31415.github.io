@@ -9,8 +9,7 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			input: {
-				main: resolve(__dirname, 'index.html'),
-				personal_ad: resolve(__dirname, '/src/personal_ad/index.html'),
+				main: resolve(__dirname, 'index.html')
 			},
 		},
 	},
