@@ -19,7 +19,7 @@ function Hero() {
 			</div>
 			<div className={styles.info}>
 				<h1>Brian Kim</h1>
-				<h2>Software Engineer</h2>
+				<h2>AI Engineer</h2>
 				<span>
 					<a
 						href='https://www.linkedin.com/in/briankim31415/'
@@ -41,15 +41,9 @@ function Hero() {
 					</a>
 				</span>
 				<p className={styles.description}>
-					Master's student in Software Engineering and Systems at UT
-					Austin focusing on AI/ML systems.
+					Masters student in Software Engineering and Systems at UT
+					Austin focusing on AI/ML.
 				</p>
-				<a
-					className={styles.description}
-					href='/src/personal_ad/'
-				>
-					Personal Ad
-				</a>
 				<a
 					href={resume}
 					target='_blank'
