@@ -8,6 +8,7 @@
         width: 100%;
         align-self: stretch;
         min-height: 200px;
+        margin-top: auto;
         padding: 20px;
         box-sizing: border-box;
         background-color: var(--project-card-bg);
@@ -68,22 +69,9 @@
 
 @media (width >= 700px) {
     .container {
-        a,
-        article {
-            flex-direction: row;
-            align-items: stretch;
-        }
-
         img {
-            width: clamp(190px, 34%, 240px);
-            min-width: clamp(190px, 34%, 240px);
             min-height: auto;
-            aspect-ratio: 4 / 3;
-        }
-
-        a > div,
-        article > div {
-            justify-content: center;
+            aspect-ratio: 16 / 9;
         }
     }
 }
