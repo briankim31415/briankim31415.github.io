@@ -3,23 +3,54 @@ import checkMarkIcon from '../../assets/checkmark-dark.svg';
 import SkillList from '../../common/SkillList';
 
 function Skills() {
+  const skillGroups = [
+    {
+      title: 'Programming',
+      skills: ['Python', 'Java', 'SAS', 'SQL', 'C++'],
+    },
+    {
+      title: 'Machine Learning',
+      skills: [
+        'PyTorch',
+        'TensorFlow',
+        'scikit-learn',
+        'NumPy',
+        'Reinforcement Learning',
+        'OpenAI API',
+        'Codex',
+      ],
+    },
+    {
+      title: 'Infrastructure',
+      skills: ['Linux', 'Git', 'Slurm (HPC)', 'Weights & Biases'],
+    },
+    {
+      title: 'Simulation / Graphics',
+      skills: [
+        'Blender',
+        'Unreal Engine 5',
+        'PyGame',
+        'NVIDIA Sionna-RT',
+        'OpenStreetMap',
+        'ArcGIS',
+      ],
+    },
+  ];
+
   return (
     <section id="skills" className={styles.container}>
       <h1 className="sectionTitle">Skills</h1>
-      <div className={styles.skillList}>
-        <SkillList src={checkMarkIcon} skill="OpenAI API" />
-        <SkillList src={checkMarkIcon} skill="PyTorch" />
-        <SkillList src={checkMarkIcon} skill="TensorFlow" />
-        <SkillList src={checkMarkIcon} skill="Scikit-Learn" />
-        <SkillList src={checkMarkIcon} skill="Linux" />
-      </div>
-      <hr />
-      <div className={styles.skillList}>
-        <SkillList src={checkMarkIcon} skill="Python" />
-        <SkillList src={checkMarkIcon} skill="Java" />
-        <SkillList src={checkMarkIcon} skill="SAS/SQL" />
-        <SkillList src={checkMarkIcon} skill="C/C++" />
-        <SkillList src={checkMarkIcon} skill="LaTeX" />
+      <div className={styles.groups}>
+        {skillGroups.map((group) => (
+          <div key={group.title} className={styles.group}>
+            <h3>{group.title}</h3>
+            <div className={styles.skillList}>
+              {group.skills.map((skill) => (
+                <SkillList key={skill} src={checkMarkIcon} skill={skill} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

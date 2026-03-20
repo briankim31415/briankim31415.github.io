@@ -1,12 +1,14 @@
-import styles from './FooterStyles.module.css'
+import styles from './FooterStyles.module.css';
 
 function Footer() {
+  const year = new Date().getFullYear();
+
   return (
     <section id="footer" className={styles.container}>
-        <p>&copy; 2024 Brian Kim.<br />
+        <p>&copy; {year} Brian Kim.<br />
         All rights reserved.</p>
     </section>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

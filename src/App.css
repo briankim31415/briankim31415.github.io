@@ -3,6 +3,8 @@
     --btn-color: #fff;
     --btn-text-color: #222;
     --project-card-bg: #fff;
+    --surface-color: rgba(255, 255, 255, 0.04);
+    --surface-border: rgba(255, 255, 255, 0.12);
     --text-color: #fff;
     --form-text-color: #fff;
     --footer-text-color: #bbb;
@@ -19,6 +21,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 60px;
+    width: min(1200px, calc(100% - 32px));
 }
 
 h1,h2,h3,p {
