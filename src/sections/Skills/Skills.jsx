@@ -1,55 +1,48 @@
 import styles from './SkillsStyles.module.css';
 import checkMarkIcon from '../../assets/checkmark-dark.svg';
-import SkillList from '../../common/SkillList';
+import Reveal from '../../common/Reveal';
+import { skillGroups } from '../../content/siteContent';
 
 function Skills() {
-  const skillGroups = [
-    {
-      title: 'Programming',
-      skills: ['Python', 'Java', 'SAS', 'SQL', 'C++'],
-    },
-    {
-      title: 'Machine Learning',
-      skills: [
-        'PyTorch',
-        'TensorFlow',
-        'scikit-learn',
-        'NumPy',
-        'Reinforcement Learning',
-        'OpenAI API',
-        'Codex',
-      ],
-    },
-    {
-      title: 'Infrastructure',
-      skills: ['Linux', 'Git', 'Slurm (HPC)', 'Weights & Biases'],
-    },
-    {
-      title: 'Simulation / Graphics',
-      skills: [
-        'Blender',
-        'Unreal Engine 5',
-        'PyGame',
-        'NVIDIA Sionna-RT',
-        'OpenStreetMap',
-        'ArcGIS',
-      ],
-    },
-  ];
-
   return (
-    <section id="skills" className={styles.container}>
-      <h1 className="sectionTitle">Skills</h1>
+    <section id="capabilities" className={styles.container}>
+      <Reveal className={styles.headingBlock} variant="fade">
+        <p className={styles.eyebrow}>Capabilities</p>
+        <h2>Built for research depth, systems thinking, and pragmatic delivery.</h2>
+        <p className={styles.lead}>
+          A working toolkit across modeling, simulation, infrastructure, and engineering
+          execution.
+        </p>
+      </Reveal>
       <div className={styles.groups}>
-        {skillGroups.map((group) => (
-          <div key={group.title} className={styles.group}>
-            <h3>{group.title}</h3>
+        {skillGroups.map((group, groupIndex) => (
+          <Reveal
+            key={group.title}
+            as="article"
+            className={styles.group}
+            delayMs={Math.min(groupIndex * 60, 180)}
+          >
+            <div className={styles.groupHeader}>
+              <h3>{group.title}</h3>
+              <p className={styles.groupDescription}>{group.description}</p>
+            </div>
             <div className={styles.skillList}>
-              {group.skills.map((skill) => (
-                <SkillList key={skill} src={checkMarkIcon} skill={skill} />
+              {group.skills.map((skill, skillIndex) => (
+                <Reveal
+                  key={skill}
+                  as="span"
+                  className={styles.pillReveal}
+                  variant="scale"
+                  delayMs={Math.min(skillIndex * 40, 160)}
+                >
+                  <span className={styles.pill}>
+                    <img src={checkMarkIcon} alt="" aria-hidden="true" />
+                    <span>{skill}</span>
+                  </span>
+                </Reveal>
               ))}
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

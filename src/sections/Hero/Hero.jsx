@@ -1,58 +1,77 @@
 import styles from './HeroStyles.module.css';
-import heroImg from '../../assets/pfp.png';
-import linkedinIcon from '../../assets/linkedin-dark.svg';
-import githubIcon from '../../assets/github-dark.svg';
-import resume from '../../assets/Resume_Brian Kim.pdf';
+import heroImg from '../../assets/pfp-optimized.webp';
+import Reveal from '../../common/Reveal';
+import { heroContent } from '../../content/siteContent';
 
 function Hero() {
 	return (
-		<section
-			id='hero'
-			className={styles.container}
-		>
-			<div className={styles.colorModeContainer}>
-				<img
-					className={styles.hero}
-					src={heroImg}
-					alt='Profile picture of Brian Kim'
-				/>
-			</div>
+		<section id='hero' className={styles.container}>
 			<div className={styles.info}>
-				<h1>Brian Kim</h1>
-				<h2>Software Engineer</h2>
-				<span>
+				<Reveal as='p' variant='fade' className={styles.eyebrow}>
+					AI / ML / Simulation / Privacy
+				</Reveal>
+				<Reveal as='h1' delayMs={30}>
+					{heroContent.name}
+				</Reveal>
+				<Reveal as='p' className={styles.role} delayMs={70}>
+					{heroContent.role}
+				</Reveal>
+				<Reveal as='p' className={styles.description} delayMs={110}>
+					{heroContent.description}
+				</Reveal>
+				<div className={styles.proofGrid}>
+					{heroContent.proofChips.map((chip, index) => (
+						<Reveal
+							key={chip}
+							as='span'
+							className={styles.proofChip}
+							variant='scale'
+							delayMs={Math.min(index * 50, 180)}
+						>
+							{chip}
+						</Reveal>
+					))}
+				</div>
+				<Reveal as='div' className={styles.actions} delayMs={160}>
 					<a
-						href='https://www.linkedin.com/in/briankim31415/'
+						className={styles.primaryAction}
+						href={heroContent.cta.href}
 						target='_blank'
 						rel='noreferrer'
 					>
-						<img
-							src={linkedinIcon}
-							alt='LinkedIn icon'
-						/>
+						{heroContent.cta.label}
 					</a>
-					<a
-						href='https://github.com/briankim31415'
-						target='_blank'
-						rel='noreferrer'
-					>
-						<img
-							src={githubIcon}
-							alt='GitHub icon'
-						/>
+					<a className={styles.secondaryAction} href='#projects'>
+						Explore Work
 					</a>
-				</span>
-				<p className={styles.description}>
-					UT Austin MSE graduate building AI/ML, simulation, and privacy-focused systems.
-				</p>
-				<a
-					href={resume}
-					target='_blank'
-					rel='noreferrer'
-				>
-					<button className='hover'>Resume</button>
-				</a>
+					<div className={styles.socials}>
+						{heroContent.socialLinks.map((link) => (
+							<a
+								key={link.label}
+								href={link.href}
+								target='_blank'
+								rel='noreferrer'
+								className={styles.socialLink}
+								aria-label={link.label}
+								title={link.label}
+							>
+								<img src={link.icon} alt='' aria-hidden='true' />
+							</a>
+						))}
+					</div>
+				</Reveal>
 			</div>
+			<Reveal as='div' className={styles.visual} variant='scale' delayMs={190}>
+				<div className={styles.frame}>
+					<div className={styles.backdrop} aria-hidden='true' />
+					<p className={styles.frameLabel}>Austin, TX</p>
+					<img
+						className={styles.hero}
+						src={heroImg}
+						alt='Profile picture of Brian Kim'
+					/>
+				</div>
+			</Reveal>
 		</section>
 	);
 }

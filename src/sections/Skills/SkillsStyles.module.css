@@ -1,64 +1,106 @@
 .container {
     display: flex;
     flex-direction: column;
-    text-align: center;
+    gap: 28px;
     width: 100%;
+}
+
+.headingBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 780px;
+}
+
+.eyebrow {
+  color: var(--footer-text-color);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 62ch;
 }
 
 .groups {
   display: grid;
-  gap: 20px;
+  gap: 22px;
 }
 
 .group {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 22px;
   padding: 24px;
   border: 1px solid var(--surface-border);
-  border-radius: 24px;
-  background-color: var(--surface-color);
+  border-radius: 28px;
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025)),
+    var(--surface-color);
+  box-shadow: var(--shadow-soft);
 
   h3 {
     margin: 0;
   }
 }
 
+.groupHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.groupDescription {
+  max-width: 42ch;
+  color: var(--footer-text-color);
+}
+
 .skillList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-    span {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background-color: rgba(255, 255, 255, 0.03);
-    }
+.pillReveal {
+  display: inline-flex;
+}
 
-    img {
-      width: 18px;
-    }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.04);
+  color: var(--text-color);
+  transition:
+    border-color 200ms ease,
+    background-color 200ms ease,
+    transform 200ms ease;
+}
 
-    p {
-      max-width: max-content;
-      font-size: 16px;
-    }
+.pill img {
+  width: 16px;
+}
+
+.pill span {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 15px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pill:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
   }
+}
 
 @media (width >= 900px) {
   .groups {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .skillList {
-    p {
-      max-width: max-content;
-      font-size: 18px;
-    }
   }
 }

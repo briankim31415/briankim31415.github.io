@@ -1,19 +1,28 @@
 import './App.css';
-import Education from './sections/Education/Education';
-import Experience from './sections/Experience/Experience';
 import Footer from './sections/Footer/Footer';
 import Hero from './sections/Hero/Hero';
 import Projects from './sections/Projects/Projects';
+import SectionNav from './common/SectionNav';
+import { sections } from './content/siteContent';
+import useActiveSection from './hooks/useActiveSection';
 import Skills from './sections/Skills/Skills';
+import Timeline from './sections/Timeline/Timeline';
+
+const sectionIds = sections.map((section) => section.id);
 
 function App() {
+	const activeSection = useActiveSection(sectionIds);
+
 	return (
 		<>
+			<SectionNav
+				sections={sections}
+				activeSection={activeSection}
+			/>
 			<Hero />
-			<Experience />
 			<Projects />
+			<Timeline />
 			<Skills />
-			<Education />
 			<Footer />
 		</>
 	);
