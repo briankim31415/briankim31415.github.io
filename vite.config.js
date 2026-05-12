@@ -10,6 +10,7 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				main: fileURLToPath(new URL('./index.html', import.meta.url)),
+				chordNumbers: fileURLToPath(new URL('./chord-numbers/index.html', import.meta.url)),
 			},
 		},
 	},

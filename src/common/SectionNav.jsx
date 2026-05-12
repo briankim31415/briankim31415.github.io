@@ -21,6 +21,12 @@ function SectionNav({ sections, activeSection }) {
               </li>
             );
           })}
+          <li>
+            <a href="/chord-numbers/">
+              <span className={styles.desktopLabel}>Chord Numbers</span>
+              <span className={styles.mobileLabel}>Chords</span>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>

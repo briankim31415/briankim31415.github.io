@@ -71,6 +71,32 @@
   display: none;
 }
 
+@media (width < 940px) {
+  .nav {
+    max-width: calc(100vw - 32px);
+    padding: 6px;
+  }
+
+  .nav ul {
+    gap: 4px;
+  }
+
+  .nav a {
+    padding: 0 12px;
+    font-size: 13px;
+  }
+}
+
+@media (width < 800px) {
+  .desktopLabel {
+    display: none;
+  }
+
+  .mobileLabel {
+    display: inline;
+  }
+}
+
 @media (width < 720px) {
   .wrap {
     inset-inline: 12px;
@@ -92,13 +118,5 @@
     min-height: 36px;
     padding: 0 10px;
     font-size: 11px;
-  }
-
-  .desktopLabel {
-    display: none;
-  }
-
-  .mobileLabel {
-    display: inline;
   }
 }
