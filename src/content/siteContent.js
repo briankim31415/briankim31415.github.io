@@ -9,6 +9,7 @@ import rlstock from '../assets/rlstock.png';
 export const sections = [
   { id: 'hero', label: 'Introduction', shortLabel: 'Intro' },
   { id: 'projects', label: 'Selected Work', shortLabel: 'Work' },
+  { id: 'side-projects', label: 'Side Projects', shortLabel: 'Side' },
   { id: 'timeline', label: 'Career Timeline', shortLabel: 'Timeline' },
   { id: 'capabilities', label: 'Capabilities', shortLabel: 'Skills' },
   { id: 'contact', label: 'Contact', shortLabel: 'Contact' },
@@ -86,6 +87,16 @@ export const projects = [
     image: musentiment,
     featured: false,
     proofChips: ['1,500 songs analyzed', 'Sentiment + health trends', 'Datathon runner-up'],
+  },
+];
+
+export const sideProjects = [
+  {
+    title: 'Chord Numbers',
+    summary:
+      'A browser-based Nashville number chart converter for quickly turning chord charts into key-agnostic number notation.',
+    link: '/chord-numbers/',
+    proofChips: ['Nashville numbers', 'Clipboard export', 'Key + mode controls'],
   },
 ];
 

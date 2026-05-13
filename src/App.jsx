@@ -3,6 +3,7 @@ import Footer from './sections/Footer/Footer';
 import Hero from './sections/Hero/Hero';
 import Projects from './sections/Projects/Projects';
 import SectionNav from './common/SectionNav';
+import SideProjects from './sections/SideProjects/SideProjects';
 import { sections } from './content/siteContent';
 import useActiveSection from './hooks/useActiveSection';
 import Skills from './sections/Skills/Skills';
@@ -21,6 +22,7 @@ function App() {
 			/>
 			<Hero />
 			<Projects />
+			<SideProjects />
 			<Timeline />
 			<Skills />
 			<Footer />
