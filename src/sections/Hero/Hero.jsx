@@ -1,5 +1,5 @@
 import styles from './HeroStyles.module.css';
-import heroImg from '../../assets/pfp-optimized.webp';
+import heroImg from '../../assets/brian-headshot.webp';
 import Reveal from '../../common/Reveal';
 import { heroContent } from '../../content/siteContent';
 
@@ -63,12 +63,11 @@ function Hero() {
 			</div>
 			<Reveal as='div' className={styles.visual} variant='scale' delayMs={190}>
 				<div className={styles.frame}>
-					<div className={styles.backdrop} aria-hidden='true' />
 					<p className={styles.frameLabel}>Austin, TX</p>
 					<img
 						className={styles.hero}
 						src={heroImg}
-						alt='Profile picture of Brian Kim'
+						alt='Headshot of Brian Kim'
 					/>
 				</div>
 			</Reveal>
