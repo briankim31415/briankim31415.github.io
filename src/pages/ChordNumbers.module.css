@@ -231,6 +231,20 @@
   .workspace {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
+
+  .lyricsPanel {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (width >= 1180px) {
+  .workspace {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lyricsPanel {
+    grid-column: auto;
+  }
 }
 
 @media (width < 760px) {

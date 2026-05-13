@@ -473,9 +473,10 @@ function lineCanBeChordOnly(line, options) {
   return tokens.every((token) => convertChordToken(token.value, options).lineCompatible);
 }
 
-function createPlainLine(text) {
+function createPlainLine(text, type = 'lyric') {
   return {
     text,
+    type,
     segments: [{ text, strong: false }],
   };
 }
@@ -532,6 +533,7 @@ function processChordLine(line, options, warnings) {
 
   return {
     text: segments.map((segment) => segment.text).join(''),
+    type: 'chord',
     segments,
   };
 }
@@ -542,12 +544,12 @@ function processSection(section, options, warnings) {
 
   section.body.forEach((line) => {
     if (isBlank(line.text)) {
-      bodyLines.push(createPlainLine(line.text));
+      bodyLines.push(createPlainLine(line.text, 'blank'));
       return;
     }
 
     if (expectedLine === 'afterChord' && !lineCanBeChordOnly(line.text, options)) {
-      bodyLines.push(createPlainLine(line.text));
+      bodyLines.push(createPlainLine(line.text, 'lyric'));
       expectedLine = 'chord';
       return;
     }
@@ -558,7 +560,7 @@ function processSection(section, options, warnings) {
 
   return {
     ...section,
-    headingLine: section.heading ? createPlainLine(section.heading.original) : null,
+    headingLine: section.heading ? createPlainLine(section.heading.original, 'heading') : null,
     bodyLines,
   };
 }
@@ -615,7 +617,10 @@ function getTrailingBlankLines(lines) {
 function updateHeadingRepeat(section, repeatCount) {
   return {
     ...section,
-    headingLine: createPlainLine(`${section.heading.base} x${section.heading.repeatCount * repeatCount}`),
+    headingLine: createPlainLine(
+      `${section.heading.base} x${section.heading.repeatCount * repeatCount}`,
+      'heading',
+    ),
   };
 }
 
@@ -721,6 +726,29 @@ function flattenSections(sections) {
   });
 }
 
+function trimBlankLines(lines) {
+  let firstContentIndex = 0;
+  let lastContentIndex = lines.length - 1;
+
+  while (firstContentIndex < lines.length && lines[firstContentIndex].type === 'blank') {
+    firstContentIndex += 1;
+  }
+
+  while (lastContentIndex >= firstContentIndex && lines[lastContentIndex].type === 'blank') {
+    lastContentIndex -= 1;
+  }
+
+  return lines.slice(firstContentIndex, lastContentIndex + 1);
+}
+
+function buildLyricsText(outputLines) {
+  return trimBlankLines(
+    outputLines.filter((line) => line.type === 'lyric' || line.type === 'blank'),
+  )
+    .map((line) => line.text)
+    .join('\n');
+}
+
 export function buildClipboardHtml(bodyHtml) {
   return `<pre style="font-family: Courier New, monospace; white-space: pre;">${bodyHtml}</pre>`;
 }
@@ -736,6 +764,7 @@ export function generateChordChart(input, options = {}) {
   if (lines.length === 0) {
     return {
       text: '',
+      lyricsText: '',
       html: '',
       clipboardHtml: buildClipboardHtml(''),
       warnings,
@@ -749,10 +778,12 @@ export function generateChordChart(input, options = {}) {
   );
   const outputLines = flattenSections(sections);
   const text = outputLines.map((line) => line.text).join('\n');
+  const lyricsText = buildLyricsText(outputLines);
   const html = outputLines.map(renderLineHtml).join('\n');
 
   return {
     text,
+    lyricsText,
     html,
     clipboardHtml: buildClipboardHtml(html),
     warnings,

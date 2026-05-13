@@ -11,6 +11,7 @@ test('converts chord lines while preserving lyric lines and columns', () => {
   const result = generateChordChart('[Verse]\n    C       G\nLyric line');
 
   assert.equal(result.text, '[Verse]\n    1       5\nLyric line');
+  assert.equal(result.lyricsText, 'Lyric line');
   assert.equal(result.warnings.length, 0);
   assert.match(result.html, /<strong>1<\/strong>\s+<strong>5<\/strong>/);
 });
@@ -61,12 +62,26 @@ test('collapses duplicated content inside a section and multiplies heading repea
   const result = generateChordChart('[Chorus] (x2)\nC\nWords\nC\nWords');
 
   assert.equal(result.text, '[Chorus] x4\n1\nWords');
+  assert.equal(result.lyricsText, 'Words');
 });
 
 test('collapses later repeated sections while preserving their headings', () => {
   const result = generateChordChart('[Chorus]\nC\nWords\n\n[Chorus] (x2)\nC\nWords');
 
   assert.equal(result.text, '[Chorus]\n1\nWords\n\n[Chorus] (x2)');
+  assert.equal(result.lyricsText, 'Words');
+});
+
+test('builds lyrics-only text without headings or chord lines', () => {
+  const result = generateChordChart('[Verse]\nC        G\nLine one\nAm       F\nLine two');
+
+  assert.equal(result.lyricsText, 'Line one\nLine two');
+});
+
+test('preserves interior lyric spacing without leading or trailing blank lines', () => {
+  const result = generateChordChart('\n[Verse]\nC\nLine one\n\nG\nLine two\n\n');
+
+  assert.equal(result.lyricsText, 'Line one\n\nLine two');
 });
 
 test('escapes clipboard HTML and bolds only converted chord tokens', () => {

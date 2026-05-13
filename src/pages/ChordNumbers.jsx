@@ -97,7 +97,7 @@ function ChordNumbers() {
             </select>
           </label>
           <button className={styles.copyButton} type="button" onClick={handleCopy}>
-            {copyStatus === 'copied' ? 'Copied' : 'Copy'}
+            {copyStatus === 'copied' ? 'Copied' : 'Copy Chart'}
           </button>
         </div>
       </header>
@@ -120,6 +120,13 @@ function ChordNumbers() {
             aria-label="Generated Nashville number chart preview"
             dangerouslySetInnerHTML={{ __html: result.html }}
           />
+        </div>
+
+        <div className={`${styles.panel} ${styles.lyricsPanel}`}>
+          <div className={styles.panelTitle}>Lyrics</div>
+          <pre className={styles.preview} aria-label="Lyrics-only preview">
+            {result.lyricsText}
+          </pre>
         </div>
       </section>
 
