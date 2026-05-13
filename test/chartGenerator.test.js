@@ -84,6 +84,27 @@ test('preserves interior lyric spacing without leading or trailing blank lines',
   assert.equal(result.lyricsText, 'Line one\n\nLine two');
 });
 
+test('limits interior blank gaps in chord and lyric output to one empty row', () => {
+  const result = generateChordChart('[Verse]\nC\nLine one\n\n\n\nG\nLine two');
+
+  assert.equal(result.text, '[Verse]\n1\nLine one\n\n5\nLine two');
+  assert.equal(result.lyricsText, 'Line one\n\nLine two');
+});
+
+test('collapses whitespace-only blank rows to a clean empty row', () => {
+  const result = generateChordChart('[Verse]\nC\nLine one\n   \n\t\nG\nLine two');
+
+  assert.equal(result.text, '[Verse]\n1\nLine one\n\n5\nLine two');
+  assert.equal(result.lyricsText, 'Line one\n\nLine two');
+});
+
+test('limits lyric gaps after chord lines are filtered out', () => {
+  const result = generateChordChart('[Verse]\nC\nLine one\n\nG\n\nLine two');
+
+  assert.equal(result.text, '[Verse]\n1\nLine one\n\n5\n\nLine two');
+  assert.equal(result.lyricsText, 'Line one\n\nLine two');
+});
+
 test('escapes clipboard HTML and bolds only converted chord tokens', () => {
   const result = generateChordChart('C\n<lyric & text>');
 

@@ -726,6 +726,25 @@ function flattenSections(sections) {
   });
 }
 
+function collapseInteriorBlankLines(lines) {
+  const normalizedLines = [];
+
+  lines.forEach((line) => {
+    if (!isBlank(line.text)) {
+      normalizedLines.push(line);
+      return;
+    }
+
+    if (normalizedLines.at(-1)?.type === 'blank') {
+      return;
+    }
+
+    normalizedLines.push(createPlainLine('', 'blank'));
+  });
+
+  return normalizedLines;
+}
+
 function trimBlankLines(lines) {
   let firstContentIndex = 0;
   let lastContentIndex = lines.length - 1;
@@ -742,8 +761,10 @@ function trimBlankLines(lines) {
 }
 
 function buildLyricsText(outputLines) {
-  return trimBlankLines(
-    outputLines.filter((line) => line.type === 'lyric' || line.type === 'blank'),
+  const lyricsLines = outputLines.filter((line) => line.type === 'lyric' || line.type === 'blank');
+
+  return collapseInteriorBlankLines(
+    trimBlankLines(lyricsLines),
   )
     .map((line) => line.text)
     .join('\n');
@@ -776,7 +797,7 @@ export function generateChordChart(input, options = {}) {
       .map((section) => processSection(section, normalizedOptions, warnings))
       .map(collapseWithinSection),
   );
-  const outputLines = flattenSections(sections);
+  const outputLines = collapseInteriorBlankLines(flattenSections(sections));
   const text = outputLines.map((line) => line.text).join('\n');
   const lyricsText = buildLyricsText(outputLines);
   const html = outputLines.map(renderLineHtml).join('\n');
