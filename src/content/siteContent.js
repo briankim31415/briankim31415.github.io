@@ -16,14 +16,14 @@ export const sections = [
 
 export const heroContent = {
   name: 'Brian Kim',
-  role: 'Software Engineer',
+  role: 'Digital Twin Full-Stack Software Engineer',
   description:
-    'UT Austin MSE graduate building AI/ML, simulation, and privacy-focused systems.',
+    'General Motors engineer with a UT Austin MSE background in AI/ML, simulation, digital twins, and privacy-focused systems.',
   proofChips: [
+    'General Motors',
     'UT Austin MSE',
-    'AI/ML Systems',
-    'Simulation Pipelines',
-    'Privacy Research',
+    'Digital Twin Platforms',
+    'AI/ML + Simulation',
   ],
   cta: {
     label: 'Open Resume',
@@ -92,10 +92,22 @@ export const projects = [
 export const timelineItems = [
   {
     kind: 'experience',
+    title: 'Digital Twin Full-Stack Software Engineer',
+    organization: 'General Motors',
+    location: 'Austin, TX',
+    timeframe: 'May 2026 - Present',
+    bullets: [
+      'Working on full-stack software for digital twin platforms.',
+      'Supporting engineering workflows through software and simulation.',
+      'Contributing to tools for automotive product development.',
+    ],
+  },
+  {
+    kind: 'experience',
     title: 'Software Engineer',
     organization: 'UT Computational Visualization Center',
     location: 'Austin, TX',
-    timeframe: 'May 2025 - Present',
+    timeframe: 'May 2025 - May 2026',
     bullets: [
       'Built a Python simulation platform around NVIDIA Sionna-RT for ray-traced urban radio-wave propagation.',
       'Automated OpenStreetMap, ArcGIS, and Blender workflows to generate digital twin scenes in Unreal Engine 5.',
@@ -183,7 +195,7 @@ export const skillGroups = [
 ];
 
 export const contactContent = {
-  heading: 'Open to thoughtful engineering work across AI, simulation, and privacy.',
+  heading: 'Building digital twin systems at the intersection of full-stack software, simulation, and AI.',
   text: 'The fastest way to get context is through my GitHub, LinkedIn, or resume.',
   links: [
     { label: 'GitHub', href: 'https://github.com/briankim31415' },

@@ -8,7 +8,7 @@ function Hero() {
 		<section id='hero' className={styles.container}>
 			<div className={styles.info}>
 				<Reveal as='p' variant='fade' className={styles.eyebrow}>
-					AI / ML / Simulation / Privacy
+					Digital Twins / Full-Stack / Simulation / AI
 				</Reveal>
 				<Reveal as='h1' delayMs={30}>
 					{heroContent.name}
