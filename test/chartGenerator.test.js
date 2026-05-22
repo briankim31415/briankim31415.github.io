@@ -7,6 +7,24 @@ import {
   generateChordChart,
 } from '../src/features/chordNumbers/chartGenerator.js';
 
+const MAX_LINE_LENGTH = 60;
+
+function assertLinesWithinLimit(value) {
+  value.split('\n').forEach((line) => {
+    assert.ok(
+      line.length <= MAX_LINE_LENGTH,
+      `Expected "${line}" to be no longer than ${MAX_LINE_LENGTH} characters.`,
+    );
+  });
+}
+
+function getVisibleHtmlText(value) {
+  return value
+    .replace(/^<pre[^>]*>/u, '')
+    .replace(/<\/pre>$/u, '')
+    .replace(/<\/?strong>/gu, '');
+}
+
 test('converts chord lines while preserving lyric lines and columns', () => {
   const result = generateChordChart('[Verse]\n    C       G\nLyric line');
 
@@ -113,4 +131,67 @@ test('escapes clipboard HTML and bolds only converted chord tokens', () => {
     result.clipboardHtml,
     buildClipboardHtml('<strong>1</strong>\n&lt;lyric &amp; text&gt;'),
   );
+});
+
+test('wraps generated lyric lines to sixty characters', () => {
+  const result = generateChordChart(
+    [
+      '[Verse]',
+      'C',
+      'This is a carefully written lyric phrase that should wrap before the final words arrive here',
+    ].join('\n'),
+  );
+
+  assertLinesWithinLimit(result.text);
+  assertLinesWithinLimit(result.lyricsText);
+  assert.equal(result.lyricsText.includes('1'), false);
+  assert.ok(result.lyricsText.split('\n').length > 1);
+});
+
+test('wraps chord and lyric pairs without shifting aligned chords', () => {
+  const lyric = 'This is a carefully written lyric phrase that should wrap before the final words land here';
+  const finalIndex = lyric.indexOf('final');
+  const chordLine = `${'C'.padEnd(finalIndex, ' ')}G`;
+  const result = generateChordChart(['[Verse]', chordLine, lyric].join('\n'));
+  const lines = result.text.split('\n');
+  const finalLyricLineIndex = lines.findIndex((line) => line.includes('final'));
+  const finalChordLine = lines[finalLyricLineIndex - 1];
+
+  assertLinesWithinLimit(result.text);
+  assert.notEqual(finalLyricLineIndex, -1);
+  assert.equal(finalChordLine.indexOf('5'), lines[finalLyricLineIndex].indexOf('final'));
+});
+
+test('keeps wrapped chord styling in preview and clipboard HTML', () => {
+  const lyric = 'This is a carefully written lyric phrase that should wrap before the final words land here';
+  const finalIndex = lyric.indexOf('final');
+  const chordLine = `${'C'.padEnd(finalIndex, ' ')}G`;
+  const result = generateChordChart(['[Verse]', chordLine, lyric].join('\n'));
+
+  assertLinesWithinLimit(getVisibleHtmlText(result.html));
+  assertLinesWithinLimit(getVisibleHtmlText(result.clipboardHtml));
+  assert.match(result.html, /<strong>1<\/strong>/);
+  assert.match(result.html, /<strong>5<\/strong>/);
+  assert.equal(result.clipboardHtml, buildClipboardHtml(result.html));
+});
+
+test('wraps long headings, chord-only lines, and unbroken lyric words to sixty characters', () => {
+  const headingResult = generateChordChart(
+    '[This heading title is intentionally long enough to cross the sixty character boundary]',
+  );
+  const chordOnlyResult = generateChordChart(
+    'C Dm Em F G Am Bdim C Dm Em F G Am Bdim C Dm Em F G Am Bdim C Dm Em F G',
+  );
+  const unbrokenLyricResult = generateChordChart(
+    [
+      '[Verse]',
+      'C',
+      'supercalifragilisticexpialidocioussupercalifragilisticexpialidocious',
+    ].join('\n'),
+  );
+
+  assertLinesWithinLimit(headingResult.text);
+  assertLinesWithinLimit(chordOnlyResult.text);
+  assertLinesWithinLimit(unbrokenLyricResult.text);
+  assertLinesWithinLimit(unbrokenLyricResult.lyricsText);
 });

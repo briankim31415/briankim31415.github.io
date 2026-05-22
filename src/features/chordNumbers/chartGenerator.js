@@ -77,6 +77,7 @@ const REPEAT_MARKER_RE = /^(?:x([2-9]\d*)|\(x([2-9]\d*)\))$/;
 const ROOT_RE = /^([A-G])([#b]?)(.*)$/u;
 const BASS_NOTE_RE = /^([A-G])([#b]?)$/;
 const HTML_ESCAPE_RE = /[&<>]/g;
+const MAX_LINE_LENGTH = 60;
 
 const escapeHtml = (value) =>
   value.replace(HTML_ESCAPE_RE, (character) => {
@@ -481,6 +482,151 @@ function createPlainLine(text, type = 'lyric') {
   };
 }
 
+function compactSegments(segments) {
+  const compacted = [];
+
+  segments.forEach((segment) => {
+    if (segment.text === '') {
+      return;
+    }
+
+    const previousSegment = compacted.at(-1);
+
+    if (previousSegment?.strong === segment.strong) {
+      previousSegment.text += segment.text;
+      return;
+    }
+
+    compacted.push({ ...segment });
+  });
+
+  return compacted.length > 0 ? compacted : [{ text: '', strong: false }];
+}
+
+function createLineFromSegments(segments, type) {
+  const compactedSegments = compactSegments(segments);
+
+  return {
+    text: compactedSegments.map((segment) => segment.text).join(''),
+    type,
+    segments: compactedSegments,
+  };
+}
+
+function trimSegmentsEnd(segments) {
+  const trimmedSegments = segments.map((segment) => ({ ...segment }));
+
+  while (trimmedSegments.length > 0) {
+    const lastSegment = trimmedSegments.at(-1);
+    const trimmedText = lastSegment.text.replace(/\s+$/u, '');
+
+    if (trimmedText.length > 0) {
+      lastSegment.text = trimmedText;
+      break;
+    }
+
+    trimmedSegments.pop();
+  }
+
+  return trimmedSegments;
+}
+
+function sliceLine(line, start, end) {
+  const segments = [];
+  let segmentStart = 0;
+
+  line.segments.forEach((segment) => {
+    const segmentEnd = segmentStart + segment.text.length;
+    const sliceStart = Math.max(start, segmentStart);
+    const sliceEnd = Math.min(end, segmentEnd);
+
+    if (sliceStart < sliceEnd) {
+      segments.push({
+        text: segment.text.slice(sliceStart - segmentStart, sliceEnd - segmentStart),
+        strong: segment.strong,
+      });
+    }
+
+    segmentStart = segmentEnd;
+  });
+
+  return createLineFromSegments(trimSegmentsEnd(segments), line.type);
+}
+
+function findWrapEnd(referenceText, start, totalLength) {
+  const hardEnd = Math.min(start + MAX_LINE_LENGTH, totalLength);
+  const referenceEnd = Math.min(hardEnd, referenceText.length);
+
+  if (totalLength - start <= MAX_LINE_LENGTH) {
+    return totalLength;
+  }
+
+  if (referenceEnd <= start) {
+    return hardEnd;
+  }
+
+  if (referenceText.length <= hardEnd && referenceText.length < totalLength) {
+    return referenceText.length;
+  }
+
+  for (let index = referenceEnd - 1; index > start; index -= 1) {
+    if (/\s/u.test(referenceText[index])) {
+      return index + 1;
+    }
+  }
+
+  return hardEnd;
+}
+
+function getWrapRanges(referenceText, totalLength = referenceText.length) {
+  const ranges = [];
+  let start = 0;
+
+  while (start < totalLength) {
+    const end = findWrapEnd(referenceText, start, totalLength);
+
+    ranges.push({
+      start,
+      end: end > start ? end : Math.min(start + MAX_LINE_LENGTH, totalLength),
+    });
+    start = ranges.at(-1).end;
+  }
+
+  return ranges;
+}
+
+function wrapLine(line) {
+  if (line.text.length <= MAX_LINE_LENGTH) {
+    return [line];
+  }
+
+  return getWrapRanges(line.text).map((range) => sliceLine(line, range.start, range.end));
+}
+
+function wrapChordLyricPair(chordLine, lyricLine) {
+  const totalLength = Math.max(chordLine.text.length, lyricLine.text.length);
+
+  if (totalLength <= MAX_LINE_LENGTH) {
+    return [chordLine, lyricLine];
+  }
+
+  return getWrapRanges(lyricLine.text, totalLength).flatMap((range) => {
+    const chordFragment = sliceLine(chordLine, range.start, range.end);
+    const lyricFragment = sliceLine(lyricLine, range.start, range.end);
+    const wrappedLines = [];
+
+    if (!isBlank(chordFragment.text)) {
+      wrappedLines.push(chordFragment);
+    }
+
+    if (!isBlank(lyricFragment.text)) {
+      wrappedLines.push(lyricFragment);
+    }
+
+    return wrappedLines;
+  });
+}
+
 function processChordLine(line, options, warnings) {
   const tokens = tokenizeLine(line.text);
   const convertedTokens = tokens.map((token) => ({
@@ -745,6 +891,27 @@ function collapseInteriorBlankLines(lines) {
   return normalizedLines;
 }
 
+function wrapOutputLines(lines) {
+  const wrappedLines = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const line = lines[index];
+    const nextLine = lines[index + 1];
+
+    if (line.type === 'chord' && nextLine?.type === 'lyric') {
+      wrappedLines.push(...wrapChordLyricPair(line, nextLine));
+      index += 2;
+      continue;
+    }
+
+    wrappedLines.push(...wrapLine(line));
+    index += 1;
+  }
+
+  return wrappedLines;
+}
+
 function trimBlankLines(lines) {
   let firstContentIndex = 0;
   let lastContentIndex = lines.length - 1;
@@ -797,7 +964,7 @@ export function generateChordChart(input, options = {}) {
       .map((section) => processSection(section, normalizedOptions, warnings))
       .map(collapseWithinSection),
   );
-  const outputLines = collapseInteriorBlankLines(flattenSections(sections));
+  const outputLines = wrapOutputLines(collapseInteriorBlankLines(flattenSections(sections)));
   const text = outputLines.map((line) => line.text).join('\n');
   const lyricsText = buildLyricsText(outputLines);
   const html = outputLines.map(renderLineHtml).join('\n');
