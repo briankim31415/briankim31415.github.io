@@ -121,7 +121,7 @@ export const timelineItems = [
     timeframe: 'May 2025 - May 2026',
     bullets: [
       'Built a Python simulation platform around NVIDIA Sionna-RT for ray-traced urban radio-wave propagation.',
-      'Automated OpenStreetMap, ArcGIS, and Blender workflows to generate digital twin scenes in Unreal Engine 5.',
+      'Automated OpenStreetMap, ArcGIS, and Blender workflows to generate digital twin scenes in Unreal Engine 5 and Three.JS.',
       'Ran real-time assessment pipelines covering dataset generation and ResNet-18 training.',
       'Trained an Infinite-GAN neural SDE on TACC with 400+ W&B GPU-hours for urban movement generation.',
     ],
